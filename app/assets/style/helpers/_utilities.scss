@@ -1,0 +1,28 @@
+@layer utilities {
+  // 運送方式  - icon 外圈
+  .frames::before{
+    content: "";
+    border: 3px solid black;
+    height: 115px;
+    width: 115px;
+    border-radius: 999px;
+    position: absolute;
+    top: -35px;
+    left: -30px;
+  }
+
+  // 商品卡片右上新品標籤
+  .newArrival::before{
+    content: "新品";
+    font-size: 20px;
+    background-color: black;
+    color: white;
+    padding: 8px 24px;
+    position: absolute;
+    right: -4px;
+    top: 12px;
+    z-index: 1;
+  }
+
+
+}
