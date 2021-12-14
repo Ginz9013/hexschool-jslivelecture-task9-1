@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+.bannerSlogan::before {
+  content: "窩窩家居\A 跟您一起品味生活";
+  white-space: pre;
+  color: white;
+  position: absolute;
+  font-size: 2rem;
+  left: 52px;
+  bottom: 48px;
+  z-index: 99;
+}
+
+.newArrival::before {
+  content: "新品";
+  font-size: 20px;
+  background-color: black;
+  color: white;
+  padding: 8px 24px;
+  position: absolute;
+  right: -4px;
+  top: 12px;
+  z-index: 1;
+}
+
+.bottomLine::before {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  height: 1px;
+  width: 1110px;
+  background-color: #BFBFBF;
+}
+
+.necessary::before {
+  content: "必填！";
+  color: #C72424;
+  position: absolute;
+  right: -56px;
+  top: 35px;
+  z-index: 1;
+}
+
+/*# sourceMappingURL=all.css.map */
