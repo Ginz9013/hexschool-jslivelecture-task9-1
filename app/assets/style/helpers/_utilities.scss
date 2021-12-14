@@ -1,14 +1,14 @@
 @layer utilities {
-  // 運送方式  - icon 外圈
-  .frames::before{
-    content: "";
-    border: 3px solid black;
-    height: 115px;
-    width: 115px;
-    border-radius: 999px;
+  // Banner 標題
+  .bannerSlogan::before{
+    content: "窩窩家居\A 跟您一起品味生活";
+    white-space: pre;
+    color: white;
     position: absolute;
-    top: -35px;
-    left: -30px;
+    font-size: 2rem;
+    left: 52px;
+    bottom: 48px;
+    z-index: 99;
   }
 
   // 商品卡片右上新品標籤
@@ -24,5 +24,23 @@
     z-index: 1;
   }
 
+  // 卡片購物車 - 下底線
+  .bottomLine::before{
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    height: 1px;
+    width: 1110px;
+    background-color: #BFBFBF;
+  }
 
+  // 預定表單 - 姓名：必填
+  .necessary::before{
+    content: "必填！";
+    color: #C72424;
+    position: absolute;
+    right: -56px;
+    top: 35px;
+    z-index: 1;
+  }
 }

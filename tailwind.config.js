@@ -17,10 +17,14 @@ module.exports = {
       },
       spacing: {
         '360px': '360px'
+      },
+      gridTemplateColumns: {
+        '27': 'repeat(27, minmax(0, 1fr))'
       }
     },
     maxWidth: {
       'screen-lg': '1110px',
+      '350': '350px'
     }
   },
   variants: {
