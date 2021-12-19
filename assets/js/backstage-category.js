@@ -1,7 +1,5 @@
 "use strict";
 
-var api_path = "ginz9013";
-var token = "gtVaknIHOtelzoQpEvYjNzBMCjq1";
 var orderInfo = document.querySelector(".js-orderInfo");
 var deleteAll = document.querySelector(".js-deleteAll");
 var orderList = []; // setTimeout(function () {

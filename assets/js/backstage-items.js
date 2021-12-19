@@ -1,7 +1,5 @@
 "use strict";
 
-var api_path = "ginz9013";
-var token = "gtVaknIHOtelzoQpEvYjNzBMCjq1";
 var orderInfo = document.querySelector(".js-orderInfo");
 var deleteAll = document.querySelector(".js-deleteAll");
 var orderList = []; // setTimeout(function () {
@@ -46,7 +44,7 @@ function getOrderList() {
 
 
 function renderOrderChart() {
-  var orderListTitle = [];
+  var c3DataList = [];
   var objProducts = {}; // 篩選資料
 
   orderList.forEach(function (item) {
@@ -64,23 +62,46 @@ function renderOrderChart() {
     var arrProductsPrice = [];
     arrProductsPrice.push(item);
     arrProductsPrice.push(objProducts[item]);
-    orderListTitle.push(arrProductsPrice);
-  }); // 商品與顏色物件
+    c3DataList.push(arrProductsPrice);
+  });
+  c3DataList.sort(function (a, b) {
+    return b[1] - a[1];
+  });
+
+  if (c3DataList.length > 3) {
+    var otherTotal = 0;
+    c3DataList.forEach(function (item, index) {
+      if (index > 2) {
+        otherTotal += c3DataList[index][1];
+      }
+    });
+    c3DataList.splice(3, c3DataList.length - 3);
+    c3DataList.push(["其他", otherTotal]);
+  } // 商品與顏色物件
+
 
   var objColors = {};
-  var arrayColors = ["#6A33F8", "#DACBFF", "#5434A7", "#9D7FEA", "#301E5F", "#CED4DA", "000000", "#808080"];
-  arrProducts.forEach(function (item, index) {
+  var arrayColors = ["#6A33F8", "#DACBFF", "#5434A7", "#9D7FEA" // "#301E5F",
+  // "#CED4DA",
+  // "000000",
+  // "#808080"
+  ];
+  var arrC3DataList = [];
+  c3DataList.forEach(function (item) {
+    arrC3DataList.push(item[0]);
+  });
+  console.log(arrC3DataList);
+  arrC3DataList.forEach(function (item, index) {
     if (objColors[item] == undefined) {
       objColors[item] = arrayColors[index];
-    } else {
-      return;
     }
-  }); // 套入C3.js
+  });
+  console.log(objColors); // 套入C3.js
 
   var chart = c3.generate({
     data: {
       // iris data from R
-      columns: orderListTitle,
+      columns: c3DataList,
       type: 'pie',
       onclick: function onclick(d, i) {
         console.log("onclick", d, i);
@@ -100,7 +121,10 @@ function renderOrderList() {
       var content = "\n        <li>".concat(itemProduct.title, "(").concat(itemProduct.quantity, ")</li>\n        ");
       productStr += content;
     }); // 遍歷訂購產品
-    // 判斷訂單狀態
+    // 時間轉換
+
+    var time = new Date(item.createdAt * 1000);
+    var orderTime = "".concat(time.getFullYear(), "/").concat(time.getMonth() + 1, "/").concat(time.getDate()); // 判斷訂單狀態
 
     var orderStatus = "";
 
@@ -111,7 +135,7 @@ function renderOrderList() {
     } // 判斷訂單狀態
 
 
-    var content = "\n      <div class=\"col-span-3 border flex justify-center items-center\">\n        <p>".concat(item.createdAt, "</p>\n      </div>\n      <div class=\"col-span-3 border flex flex-col justify-center items-start pl-3 py-2\">\n        <p>").concat(item.user.name, "</p>\n        <p>").concat(item.user.tel, "</p>\n      </div>\n      <div class=\"col-span-5 border flex items-center px-3\">\n        <p>").concat(item.user.address, "</p>\n      </div>\n      <div class=\"col-span-5 border flex justify-center items-center\">\n        <p>").concat(item.user.email, "</p>\n      </div>\n      <ul class=\"col-span-4 border text-center py-2\">\n          ").concat(productStr, "\n      </ul>\n      <div class=\"col-span-3 border flex justify-center items-center\">\n        <p>2021/03/08</p>\n      </div>\n      <div class=\"col-span-2 border flex justify-center items-center\">\n        <a class=\"text-blue-500 underline leading-7 cursor-pointer\" data-orderStatus=\"orderStatus\" data-orderPaid=\"").concat(item.paid, "\" data-orderId=\"").concat(item.id, "\">").concat(orderStatus, "</a>\n      </div>\n      <div class=\"col-span-2 border flex justify-center items-center\">\n        <input type=\"button\" class=\"bg-gray-100 rounded-sm px-3 py-1 cursor-pointer hover:bg-red-600 hover:text-white\"\n          value=\"\u522A\u9664\" data-deleteOrder=\"deleteOrder\" data-orderId=\"").concat(item.id, "\">\n      </div>\n    ");
+    var content = "\n      <div class=\"col-span-3 border flex justify-center items-center px-2\">\n        <p class=\"break-all\">".concat(item.id, "</p>\n      </div>\n      <div class=\"col-span-3 border flex flex-col justify-center items-start pl-3 py-2\">\n        <p>").concat(item.user.name, "</p>\n        <p>").concat(item.user.tel, "</p>\n      </div>\n      <div class=\"col-span-4 border flex items-center px-3\">\n        <p>").concat(item.user.address, "</p>\n      </div>\n      <div class=\"col-span-5 border flex justify-center items-center\">\n        <p class=\"break-all\">").concat(item.user.email, "</p>\n      </div>\n      <ul class=\"col-span-5 border text-center py-2\">\n          ").concat(productStr, "\n      </ul>\n      <div class=\"col-span-3 border flex justify-center items-center\">\n        <p class=\"break-all\">").concat(orderTime, "</p>\n      </div>\n      <div class=\"col-span-2 border flex justify-center items-center\">\n        <a class=\"text-blue-500 underline leading-7 cursor-pointer\" data-orderStatus=\"orderStatus\" data-orderPaid=\"").concat(item.paid, "\" data-orderId=\"").concat(item.id, "\">").concat(orderStatus, "</a>\n      </div>\n      <div class=\"col-span-2 border flex justify-center items-center\">\n        <input type=\"button\" class=\"bg-gray-100 rounded-sm px-3 py-1 cursor-pointer hover:bg-red-600 hover:text-white\"\n          value=\"\u522A\u9664\" data-deleteOrder=\"deleteOrder\" data-orderId=\"").concat(item.id, "\">\n      </div>\n    ");
     str += content;
   });
   orderInfo.innerHTML = str;

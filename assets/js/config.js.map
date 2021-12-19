@@ -1,0 +1,1 @@
+{"version":3,"sources":["config.js"],"names":["api_path","token"],"mappings":";;AAAA,IAAMA,QAAQ,GAAG,UAAjB;AACA,IAAMC,KAAK,GAAG,8BAAd","sourcesContent":["const api_path = \"ginz9013\";\nconst token = \"gtVaknIHOtelzoQpEvYjNzBMCjq1\";"],"file":"config.js"}

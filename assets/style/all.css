@@ -23,20 +23,12 @@
   z-index: 1;
 }
 
-.bottomLine::before {
-  content: "";
-  position: absolute;
-  bottom: -20px;
-  height: 1px;
-  width: 1110px;
-  background-color: #BFBFBF;
-}
-
 .necessary::before {
-  content: "必填！";
+  content: attr(data-text);
+  width: 150px;
   color: #C72424;
   position: absolute;
-  right: -56px;
+  left: 360px;
   top: 35px;
   z-index: 1;
 }
