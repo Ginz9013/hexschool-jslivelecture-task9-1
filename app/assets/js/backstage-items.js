@@ -1,14 +1,7 @@
-const api_path = "ginz9013";
-const token = "gtVaknIHOtelzoQpEvYjNzBMCjq1";
-
 const orderInfo = document.querySelector(".js-orderInfo")
 const deleteAll = document.querySelector(".js-deleteAll")
 
 let orderList = [];
-
-
-
-
 
 
 // setTimeout(function () {
@@ -58,7 +51,7 @@ function getOrderList() {
 
 // 渲染上方圓餅圖 c3.js
 function renderOrderChart() {
-  let orderListTitle = [];
+  let c3DataList = [];
 
   let objProducts = {};
 
@@ -81,9 +74,24 @@ function renderOrderChart() {
     arrProductsPrice.push(item);
     arrProductsPrice.push(objProducts[item]);
 
-    orderListTitle.push(arrProductsPrice);
+    c3DataList.push(arrProductsPrice);
   })
 
+  c3DataList.sort(function (a, b) {
+    return b[1] - a[1];
+  })
+
+  if (c3DataList.length > 3) {
+    let otherTotal = 0;
+    c3DataList.forEach(function (item, index) {
+      if (index > 2) {
+        otherTotal += c3DataList[index][1];
+      }
+    });
+
+    c3DataList.splice(3, c3DataList.length - 3);
+    c3DataList.push(["其他", otherTotal]);
+  }
 
   // 商品與顏色物件
   let objColors = {};
@@ -92,26 +100,33 @@ function renderOrderChart() {
     "#DACBFF",
     "#5434A7",
     "#9D7FEA",
-    "#301E5F",
-    "#CED4DA",
-    "000000",
-    "#808080"
+    // "#301E5F",
+    // "#CED4DA",
+    // "000000",
+    // "#808080"
   ];
+  let arrC3DataList = [];
 
-  arrProducts.forEach(function (item, index) {
+  c3DataList.forEach(function (item) {
+    arrC3DataList.push(item[0])
+  });
+
+  console.log(arrC3DataList);
+
+  arrC3DataList.forEach(function (item, index) {
     if (objColors[item] == undefined) {
       objColors[item] = arrayColors[index]
-    } else {
-      return;
     }
   });
+
+  console.log(objColors);
 
 
   // 套入C3.js
   let chart = c3.generate({
     data: {
       // iris data from R
-      columns: orderListTitle,
+      columns: c3DataList,
       type: 'pie',
       onclick: function (d, i) { console.log("onclick", d, i); },
       colors: objColors
@@ -140,6 +155,10 @@ function renderOrderList() {
     // 遍歷訂購產品
 
 
+    // 時間轉換
+    let time = new Date(item.createdAt * 1000);
+    let orderTime = `${time.getFullYear()}/${time.getMonth() + 1}/${time.getDate()}`;
+
 
     // 判斷訂單狀態
     let orderStatus = "";
@@ -152,24 +171,24 @@ function renderOrderList() {
 
 
     let content = `
-      <div class="col-span-3 border flex justify-center items-center">
-        <p>${item.createdAt}</p>
+      <div class="col-span-3 border flex justify-center items-center px-2">
+        <p class="break-all">${item.id}</p>
       </div>
       <div class="col-span-3 border flex flex-col justify-center items-start pl-3 py-2">
         <p>${item.user.name}</p>
         <p>${item.user.tel}</p>
       </div>
-      <div class="col-span-5 border flex items-center px-3">
+      <div class="col-span-4 border flex items-center px-3">
         <p>${item.user.address}</p>
       </div>
       <div class="col-span-5 border flex justify-center items-center">
-        <p>${item.user.email}</p>
+        <p class="break-all">${item.user.email}</p>
       </div>
-      <ul class="col-span-4 border text-center py-2">
+      <ul class="col-span-5 border text-center py-2">
           ${productStr}
       </ul>
       <div class="col-span-3 border flex justify-center items-center">
-        <p>2021/03/08</p>
+        <p class="break-all">${orderTime}</p>
       </div>
       <div class="col-span-2 border flex justify-center items-center">
         <a class="text-blue-500 underline leading-7 cursor-pointer" data-orderStatus="orderStatus" data-orderPaid="${item.paid}" data-orderId="${item.id}">${orderStatus}</a>
